@@ -7,9 +7,19 @@ const Footer: React.FC = () => {
       <div className="max-w-[1400px] mx-auto border-x border-dashed border-stone-300">
         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-dashed divide-stone-300">
           {/* Copyright */}
-          <div className="p-6 flex items-center justify-center md:justify-start">
-            <p className="text-[10px] text-stone-500 font-mono uppercase tracking-widest">
-              © {new Date().getFullYear()} Fillo.
+          <div className="p-6 flex flex-col items-center md:items-start justify-center gap-1">
+            <p className="text-[10px] text-stone-400 max-w-[400px] text-center md:text-left leading-tight">
+              This is an independent student project. Not affiliated with,
+              endorsed by, or sponsored by{" "}
+              <a
+                href="https://www.umpsa.edu.my"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-stone-600 underline decoration-dashed underline-offset-2 transition-colors"
+              >
+                UMPSA
+              </a>{" "}
+              in any way.
             </p>
           </div>
 
