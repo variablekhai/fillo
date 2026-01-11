@@ -3,6 +3,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import Button from "@/app/components/ui/Button";
+import { useRouter } from "next/navigation";
 
 import { motion } from "framer-motion";
 
@@ -39,8 +40,10 @@ const StrikethroughText = () => {
 };
 
 const Hero: React.FC = () => {
+  const router = useRouter();
+
   return (
-    <section className="relative border-b border-dashed border-stone-300 h-full flex flex-col justify-center items-center overflow-hidden bg-fillo-50">
+    <section className="relative h-full flex flex-col justify-center items-center overflow-hidden bg-fillo-50">
       {/* Grid Background */}
       <div className="absolute inset-0 bg-grid-pattern bg-size-[40px_40px] opacity-20"></div>
 
@@ -81,6 +84,7 @@ const Hero: React.FC = () => {
             size="lg"
             rightIcon={<ArrowRight size={18} />}
             className="text-base h-12 md:h-14 px-8 md:px-10"
+            onClick={() => router.push("/get-started")}
           >
             Get Started
           </Button>

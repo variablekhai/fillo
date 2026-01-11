@@ -3,7 +3,7 @@ import { Github } from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-stone-50 mt-auto">
+    <footer className="border-t border-dashed border-stone-300 bg-stone-50 mt-auto">
       <div className="max-w-[1400px] mx-auto border-x border-dashed border-stone-300">
         <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-dashed divide-stone-300">
           {/* Copyright */}

@@ -4,9 +4,11 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowRight, Menu, X } from "lucide-react";
 import Button from "@/app/components/ui/Button";
+import { useRouter } from "next/navigation";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const router = useRouter();
 
   return (
     <nav className="sticky top-0 z-50 bg-fillo-50/90 backdrop-blur-md border-b border-dashed border-stone-300">
@@ -38,6 +40,7 @@ const Header: React.FC = () => {
             size="md"
             rightIcon={<ArrowRight size={18} />}
             className="text-md"
+            onClick={() => router.push("/get-started")}
           >
             Get Started
           </Button>
