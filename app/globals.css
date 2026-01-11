@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: "Space Mono", "Nunito Sans", sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-display: "Playfair Display", serif;
+  --font-mono: "Space Mono", monospace;
+  --font-mono: var(--font-space-mono);
+
+  --color-fillo-50: #fbf7f6;
+  --color-fillo-100: #f5efeb;
+  --color-fillo-200: #eadcd6;
+  --color-fillo-300: #dbc0b6;
+  --color-fillo-400: #c59a8c;
+  --color-fillo-500: #b07968;
+  --color-fillo-600: #a3684b;
+  --color-fillo-700: #8c5039;
+  --color-fillo-800: #754534;
+  --color-fillo-900: #603b2f;
+
+  --color-stone-50: #fafaf9;
+  --color-stone-100: #f5f5f4;
+  --color-stone-200: #e7e5e4;
+  --color-stone-300: #d6d3d1;
+  --color-stone-400: #a8a29e;
+  --color-stone-500: #78716c;
+  --color-stone-600: #57534e;
+  --color-stone-700: #44403c;
+  --color-stone-800: #292524;
+  --color-stone-900: #1c1917;
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+  --background-image-grid-pattern: linear-gradient(
+      to right,
+      #d6d3d1 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, #d6d3d1 1px, transparent 1px);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer utilities {
+  .border-dashed {
+    border-style: dashed !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-fillo-50);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-fillo-100);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-fillo-300);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fillo-400);
 }
