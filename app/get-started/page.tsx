@@ -6,30 +6,26 @@ import React, { useState } from "react";
 import Footer from "@/app/components/Footer";
 import { Stepper } from "@/app/components/ui/Stepper";
 import Button from "@/app/components/ui/Button";
-import {
-  Upload,
-  GraduationCap,
-  ArrowRight,
-  FileText,
-  PlusIcon,
-} from "lucide-react";
+import { Upload, GraduationCap, ArrowRight, PlusIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTemplateStore } from "@/app/store/templateStore";
 
 export default function GetStartedPage() {
-  const [currentStep, setCurrentStep] = useState(0);
+  const router = useRouter();
+  const { setFile } = useTemplateStore();
+  const currentStep = 0;
   const steps = ["Select Template", "Capture Fields", "Fill Data"];
 
-  // Mock template selection handler
   const handleSelectUniversityTemplate = () => {
-    console.log("UMPSA Template Selected");
-    // setCurrentStep(1); // Proceed to next step in real implementation
+    setFile(null);
+    router.push("/template/fields?template=umpsa");
   };
 
-  // Mock file upload handler
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log("File uploaded:", file.name);
-      // Logic to handle file and move to next step would go here
+      setFile(file);
+      router.push("/template/fields?template=custom");
     }
   };
 
