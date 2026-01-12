@@ -2,11 +2,13 @@ import { useTemplateStore } from "../store/templateStore";
 import { FieldItem } from "./FieldItem";
 import { useRouter } from "next/navigation";
 import Button from "@/app/components/ui/Button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ScanEye } from "lucide-react";
+import clsx from "clsx";
 
 export const FieldSidebar = () => {
   const router = useRouter();
-  const { fields, updateField, removeField } = useTemplateStore();
+  const { fields, updateField, removeField, setCurrentPage, currentPage } =
+    useTemplateStore();
 
   // Group by page
   const fieldsByPage = fields.reduce((acc, field) => {
@@ -36,24 +38,54 @@ export const FieldSidebar = () => {
           </div>
         )}
 
-        {Object.entries(fieldsByPage).map(([pageIndex, fields]) => (
-          <div key={pageIndex}>
-            <h3 className="text-xs font-bold text-fillo-600 uppercase mb-3 tracking-wider flex items-center gap-2 bg-fillo-50 p-2 border border-fillo-100/50">
-              <span className="w-2 h-2 bg-fillo-500 shadow-sm" />
-              Page {Number(pageIndex) + 1}
-            </h3>
-            <div className="space-y-3">
-              {fields.map((field) => (
-                <FieldItem
-                  key={field.id}
-                  field={field}
-                  onUpdate={updateField}
-                  onRemove={removeField}
+        {Object.entries(fieldsByPage).map(([pageIndex, fields]) => {
+          const pageNum = Number(pageIndex) + 1;
+          const isActive = currentPage === pageNum;
+
+          return (
+            <div key={pageIndex}>
+              <button
+                onClick={() => setCurrentPage(pageNum)}
+                title={`Jump to Page ${pageNum}`}
+                className={clsx(
+                  "w-full text-xs font-bold uppercase mb-3 tracking-wider flex items-center justify-between p-2 border transition-all rounded-sm text-left group cursor-pointer",
+                  isActive
+                    ? "bg-fillo-600 text-white border-fillo-600 shadow-md ring-1 ring-fillo-600"
+                    : "bg-fillo-50 text-fillo-600 border-fillo-100/50 hover:bg-fillo-100 hover:border-fillo-200 hover:text-fillo-700"
+                )}
+              >
+                <div className="flex items-center gap-2">
+                  <span
+                    className={clsx(
+                      "w-2 h-2 shadow-sm transition-colors",
+                      isActive ? "bg-white" : "bg-fillo-500"
+                    )}
+                  />
+                  Page {pageNum}
+                </div>
+                <ScanEye
+                  size={14}
+                  className={clsx(
+                    "transition-all duration-200",
+                    isActive
+                      ? "opacity-100"
+                      : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 text-fillo-400"
+                  )}
                 />
-              ))}
+              </button>
+              <div className="space-y-3">
+                {fields.map((field) => (
+                  <FieldItem
+                    key={field.id}
+                    field={field}
+                    onUpdate={updateField}
+                    onRemove={removeField}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {/* Actions Section */}
       <div className="p-4 border-t border-gray-200 bg-gray-50">
