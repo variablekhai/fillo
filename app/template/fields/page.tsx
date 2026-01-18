@@ -9,7 +9,9 @@ import { Loader2 } from "lucide-react";
 import Footer from "@/app/components/Footer";
 import { UMPSA_PRESET_FIELDS } from "@/app/config/template-presets";
 
-export default function TemplateViewerPage() {
+import { Suspense } from "react";
+
+function TemplateViewerContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const templateType = searchParams.get("template");
@@ -75,5 +77,19 @@ export default function TemplateViewerPage() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+export default function TemplateViewerPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-gray-50 text-stone-500">
+          <Loader2 className="animate-spin" size={32} />
+        </div>
+      }
+    >
+      <TemplateViewerContent />
+    </Suspense>
   );
 }
