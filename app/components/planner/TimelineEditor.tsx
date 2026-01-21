@@ -7,11 +7,13 @@ import { WeekSidebar } from "./WeekSidebar";
 import { WeekView } from "./WeekView";
 import { TemplateDrawer } from "./TemplateDrawer";
 import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
+import { generatePDF } from "../../utils/pdfGenerator";
 
 // Ensure worker is set
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export const TimelineEditor = () => {
+  const appState = useAppStore();
   const {
     weeks,
     activeWeekId,
@@ -28,9 +30,36 @@ export const TimelineEditor = () => {
     updateWeek,
     numPages,
     setNumPages,
-  } = useAppStore();
+  } = appState;
 
   const [isTemplateDrawerOpen, setIsTemplateDrawerOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
+
+  const handleExport = async () => {
+    try {
+      setIsExporting(true);
+      // Wait a bit to allow UI to update
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const pdfBytes = await generatePDF(appState);
+      if (!pdfBytes) throw new Error("Failed to generate PDF");
+
+      const blob = new Blob([pdfBytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `planner-${new Date().toISOString().split("T")[0]}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Export failed:", error);
+      alert("Failed to export PDF. Please try again.");
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   // Auto-select first week
   useEffect(() => {
@@ -65,6 +94,8 @@ export const TimelineEditor = () => {
         addWeek={addWeek}
         duplicateWeek={duplicateWeek}
         removeWeek={removeWeek}
+        onExport={handleExport}
+        isExporting={isExporting}
       />
 
       {/* 2. Main Content */}

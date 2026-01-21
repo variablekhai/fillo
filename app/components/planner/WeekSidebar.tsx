@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Copy, Trash2, FileText } from "lucide-react";
+import { Plus, Copy, Trash2, FileText, Download, Loader2 } from "lucide-react";
 import clsx from "clsx";
 import { WeekConfig } from "@/app/types";
 
@@ -11,6 +11,8 @@ interface WeekSidebarProps {
   addWeek: () => void;
   duplicateWeek: (id: string) => void;
   removeWeek: (id: string) => void;
+  onExport: () => void;
+  isExporting: boolean;
 }
 
 export const WeekSidebar = ({
@@ -20,6 +22,8 @@ export const WeekSidebar = ({
   addWeek,
   duplicateWeek,
   removeWeek,
+  onExport,
+  isExporting,
 }: WeekSidebarProps) => {
   return (
     <nav className="w-64 bg-white border-r border-stone-200 flex flex-col shrink-0 z-20 h-full">
@@ -129,6 +133,26 @@ export const WeekSidebar = ({
             <p className="text-xs">No weeks added.</p>
           </div>
         )}
+      </div>
+
+      <div className="p-4 border-t border-stone-200 bg-stone-50">
+        <button
+          onClick={onExport}
+          disabled={isExporting}
+          className="w-full flex items-center justify-center gap-2 bg-stone-900 hover:bg-stone-800 text-white py-2.5 px-4 font-bold text-sm transition-colors disabled:opacity-70 disabled:cursor-not-allowed shadow-sm active:translate-y-0.5"
+        >
+          {isExporting ? (
+            <>
+              <Loader2 className="animate-spin" size={16} />
+              <span>Generating...</span>
+            </>
+          ) : (
+            <>
+              <Download size={16} />
+              <span>Export PDF</span>
+            </>
+          )}
+        </button>
       </div>
     </nav>
   );

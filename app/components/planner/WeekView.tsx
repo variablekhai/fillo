@@ -5,7 +5,9 @@ import { WeekConfig } from "@/app/types";
 import { Calendar as CalendarIcon, LayoutGrid, Plus } from "lucide-react";
 import { PageCard } from "./PageCard";
 import { RepeatModal } from "./RepeatModal";
+import { AIGenerationModal } from "./AIGenerationModal";
 import Button from "@/app/components/ui/Button";
+import { Sparkles } from "lucide-react";
 
 interface WeekViewProps {
   week: WeekConfig;
@@ -39,6 +41,7 @@ export const WeekView = ({
   const [repeatModalOpenFor, setRepeatModalOpenFor] = useState<string | null>(
     null,
   );
+  const [isAIModalOpen, setIsAIModalOpen] = useState(false);
 
   // Sync internal state if props change (navigating between weeks)
   React.useEffect(() => {
@@ -141,6 +144,67 @@ export const WeekView = ({
     setRepeatModalOpenFor(null);
   };
 
+  const handleAIGenerate = async (details: string) => {
+    try {
+      // 1. Prepare data for AI
+      // specific fields to process
+      const fieldsToGenerate = week.pages.flatMap((page, pageIdx) => {
+        // Find fields for this page
+        const pageFields = fieldDefinitions.filter(
+          (f) => f.pageIndex === page.templatePageIndex,
+        );
+
+        return pageFields.map((field) => ({
+          identifier: `${page.instanceId}:${field.id}`,
+          fieldName: field.name,
+          role: field.role,
+          pageNumber: pageIdx + 1,
+          currentValue: fieldValues[`${page.instanceId}:${field.id}`] || "",
+        }));
+      });
+
+      const payload = {
+        weekDetails: details,
+        fieldsToGenerate,
+        weekConfig: {
+          startDate: startDate,
+          weekNumber: weekNumber,
+        },
+      };
+
+      console.log("Sending to AI:", payload);
+
+      // 2. Call API
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Generation failed");
+
+      const updates = await response.json();
+      console.log("AI Response:", updates);
+
+      // 3. Apply updates
+      Object.entries(updates).forEach(([key, value]) => {
+        // Safe split: find the first colon
+        const separatorIndex = key.indexOf(":");
+        if (separatorIndex === -1) return;
+
+        const pageInstanceId = key.substring(0, separatorIndex);
+        const fieldId = key.substring(separatorIndex + 1);
+
+        if (pageInstanceId && fieldId) {
+          updateFieldValue(pageInstanceId, fieldId, value as string);
+        }
+      });
+    } catch (error) {
+      console.error("AI Generation error:", error);
+      alert("Failed to generate logs. Please try again.");
+    }
+  };
+
   return (
     <div className="flex-1 flex flex-col min-h-0 bg-stone-50/30">
       {/* Header */}
@@ -182,9 +246,19 @@ export const WeekView = ({
           </div>
         </div>
 
-        <Button onClick={onOpenTemplateDrawer} leftIcon={<Plus size={18} />}>
-          Add Page
-        </Button>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            onClick={() => setIsAIModalOpen(true)}
+            leftIcon={<Sparkles size={16} className="text-fillo-600" />}
+            disabled={week.pages.length === 0}
+          >
+            AI Autocomplete
+          </Button>
+          <Button onClick={onOpenTemplateDrawer} leftIcon={<Plus size={18} />}>
+            Add Page
+          </Button>
+        </div>
       </header>
 
       {/* Pages List */}
@@ -233,6 +307,12 @@ export const WeekView = ({
         onRepeat={(days) => {
           if (repeatModalOpenFor) handleRepeat(repeatModalOpenFor, days);
         }}
+      />
+
+      <AIGenerationModal
+        isOpen={isAIModalOpen}
+        onClose={() => setIsAIModalOpen(false)}
+        onGenerate={handleAIGenerate}
       />
     </div>
   );
