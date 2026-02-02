@@ -54,7 +54,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
     pageIndex: 8,
     rect: {
       x: 284.5,
-      y: 87.4,
+      y: 87.3,
       width: 22,
       height: 12,
     },
@@ -126,7 +126,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
     pageIndex: 8,
     rect: {
       x: 140,
-      y: 750.1,
+      y: 750,
       width: 16,
       height: 12,
     },
