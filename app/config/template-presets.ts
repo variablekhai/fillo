@@ -1,5 +1,4 @@
 import { FieldDefinition } from "../types";
-import { v4 as uuidv4 } from "uuid";
 
 export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
   {
@@ -12,7 +11,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 15,
     },
     role: "date",
-    id: uuidv4(),
+    id: "p3-date",
   },
   {
     name: "Day",
@@ -24,7 +23,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 15,
     },
     role: "day",
-    id: uuidv4(),
+    id: "p3-day",
   },
   {
     name: "Week Number",
@@ -36,7 +35,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 15,
     },
     role: "week",
-    id: uuidv4(),
+    id: "p3-week",
   },
   {
     name: "Activity",
@@ -48,7 +47,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 500,
     },
     role: "text",
-    id: uuidv4(),
+    id: "p3-activity",
   },
   {
     name: "Week Number",
@@ -60,7 +59,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 12,
     },
     role: "week",
-    id: uuidv4(),
+    id: "p9-week-top",
   },
   {
     name: "Date",
@@ -72,7 +71,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 15,
     },
     role: "date",
-    id: uuidv4(),
+    id: "p9-date-top",
   },
   {
     name: "Work Details",
@@ -84,7 +83,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 283,
     },
     role: "text",
-    id: uuidv4(),
+    id: "p9-work-details",
   },
   {
     name: "What did I learn",
@@ -96,7 +95,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 283,
     },
     role: "text",
-    id: uuidv4(),
+    id: "p9-learning",
   },
   {
     name: "How does this relate",
@@ -108,7 +107,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 283,
     },
     role: "text",
-    id: uuidv4(),
+    id: "p9-relation",
   },
   {
     name: "Date",
@@ -120,7 +119,7 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 14,
     },
     role: "date",
-    id: uuidv4(),
+    id: "p9-date-bottom",
   },
   {
     name: "Week Number",
@@ -132,6 +131,6 @@ export const UMPSA_PRESET_FIELDS: FieldDefinition[] = [
       height: 12,
     },
     role: "week",
-    id: uuidv4(),
+    id: "p9-week-bottom",
   },
 ];

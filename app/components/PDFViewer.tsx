@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useTemplateStore } from "../store/templateStore";
-import { v4 as uuidv4 } from "uuid";
+
 import { BoundingBox } from "../types";
 import { X } from "lucide-react";
 

@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { AppState, FieldDefinition, PageConfig, WeekConfig } from "../types";
-import { v4 as uuidv4 } from "uuid";
+
+const generateId = () =>
+  Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
 
 const WEEK_COLORS = [
   "bg-blue-50 border-blue-200",
@@ -51,7 +53,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   addWeek: () =>
     set((state) => {
-      const newWeekId = uuidv4();
+      const newWeekId = generateId();
       // Find the highest week number
       const maxWeekNum = state.weeks.reduce(
         (max, w) => Math.max(max, w.weekNumber || 0),
@@ -80,12 +82,12 @@ export const useAppStore = create<AppState>((set) => ({
       const weekToClone = state.weeks.find((w) => w.id === weekId);
       if (!weekToClone) return state;
 
-      const newWeekId = uuidv4();
+      const newWeekId = generateId();
 
       // Deep clone pages with new instance IDs
       const newPages = weekToClone.pages.map((p) => ({
         ...p,
-        instanceId: uuidv4(),
+        instanceId: generateId(),
         weekId: newWeekId,
       }));
 
@@ -125,7 +127,7 @@ export const useAppStore = create<AppState>((set) => ({
     }),
 
   addPageToWeek: (weekId, templatePageIndex) => {
-    const instanceId = uuidv4();
+    const instanceId = generateId();
     set((state) => ({
       weeks: state.weeks.map((week) => {
         if (week.id === weekId) {
@@ -134,7 +136,7 @@ export const useAppStore = create<AppState>((set) => ({
             pages: [
               ...week.pages,
               {
-                id: uuidv4(),
+                id: generateId(),
                 templatePageIndex,
                 instanceId,
                 weekId: week.id,

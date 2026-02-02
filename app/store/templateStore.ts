@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { FieldDefinition } from "../types";
-import { v4 as uuidv4 } from "uuid";
 
 interface TemplateState {
   file: File | null;
@@ -41,7 +40,7 @@ export const useTemplateStore = create<TemplateState>((set) => ({
 
   addField: (def) =>
     set((state) => ({
-      fields: [...state.fields, { ...def, id: uuidv4() }],
+      fields: [...state.fields, { ...def, id: `field-${Date.now()}` }],
     })),
 
   updateField: (id, updates) =>
