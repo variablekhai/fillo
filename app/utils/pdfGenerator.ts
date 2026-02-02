@@ -27,8 +27,16 @@ export const generatePDF = async (state: AppState) => {
 
       // Draw fields
       for (const field of fields) {
-        const value =
+        let value =
           state.fieldValues[`${pageConfig.instanceId}:${field.id}`] || "";
+
+        if (value && field.role === "date") {
+          const parts = value.split("-");
+          if (parts.length === 3) {
+            value = `${parts[2]}/${parts[1]}/${parts[0]}`;
+          }
+        }
+
         if (value) {
           // Calculate best fitting font size
           const fontSize = calculateFontSize(
